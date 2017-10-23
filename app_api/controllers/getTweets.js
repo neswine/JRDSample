@@ -35,10 +35,18 @@ module.exports.getUpdates = function(req, res) {
 	var http = require('../../bin/www');
 	var io = require('socket.io')(http);
 	var stream = T.stream('statuses/filter', { track: (req.body.filterName) })
+	var emitInProgress = false
 
 	stream.on('tweet', function (tweets) {
 		// emits the latest tweets
-		io.sockets.emit("newTweet", {data:tweets});
+		// Since lots of tweets come, to control emit, a 2 second gap is added after every emit.
+		if(!emitInProgress){
+			emitInProgress = true;
+			setTimeout(function(){
+				io.sockets.emit("newTweet", {data:tweets});
+				emitInProgress = false;	
+			}, 2000);
+		}
 	});
 
 	io.sockets.on('connection', function(socket){
@@ -63,7 +71,6 @@ module.exports.loadTopics = function(req, res, next) {
 		config.TWITTER_AUTH_KEYS.ACCESS_TOKEN_SECRET,       
 		function (e, data, response){
 			if (e) next(e);        
-			console.log(JSON.parse(data));
 			res.send(JSON.parse(data)[0].trends.slice(0, 25))  
 		}
 	);  

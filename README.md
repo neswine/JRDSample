@@ -24,7 +24,9 @@ Folder Structure
 - package.json
 
 
-Pre-requisites: Install Node.js
+Pre-requisites
+--------------
+Install Node.js
 
 Run the code
 ------------
