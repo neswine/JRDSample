@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col col-md-4" ng-repeat="trend in trends" ng-if="trends.length!=0">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><a href="{{trend.url}}">{{trend.name}}</a></h4>
+                <h6 class="card-subtitle mb-2 text-muted">{{trend.tweet_volume ? trend.tweet_volume : '-'}}</h6>
+                <p class="card-text">{{trend.promoted_content ? trend.promoted_content : 'No Content'}}</p>
+                <button class="btn btn-primary" ng-click='goToTweets(trend)'>See latest tweets</button>
+            </div>
+        </div>
+    </div>
+    <div ng-if="trends.length==0">
+        <h2>No Trends Available</h2>
+    </div>
+</div>
